@@ -1,0 +1,45 @@
+services:
+  cadvisor:
+    image: zcube/cadvisor
+    container_name: cadvisor
+    volumes:
+      - "/:/rootfs:ro"
+      - "/var/run:/var/run:ro"
+      - "/sys:/sys:ro"
+      - "/var/lib/docker/:/var/lib/docker:ro"
+      - "/dev/disk/:/dev/disk:ro"
+    ports:
+      - "8080:8080"
+  node_exporter:
+    image: prom/node-exporter
+    container_name: node_exporter
+    ports:
+      - '9100:9100'
+    restart: on-failure
+    volumes:
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - '/:/host:ro,rslave'
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    command: # use bellow commands if you want to setup with basic auth
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.config.file=/etc/prometheus/web.yml 
+    volumes:
+      - './prometheus.yml:/etc/prometheus/prometheus.yml'
+      - './web.yml:/etc/prometheus/web.yml'
+      - prome_data:/var/lib/prometheus
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  prome_data:
+  grafana_data:
