@@ -1,2 +1,0 @@
-basic_auth_users:
-  admin: {password_generated_with_htpasswd_or_something_else}

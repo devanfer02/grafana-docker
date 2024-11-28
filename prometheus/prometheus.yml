@@ -15,15 +15,12 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ["{ip}:{port}"]
-    basic_auth:
-      username: '{username}'
-      password: '{password}'
+      - targets: ["prometheus:9090"]
 
   - job_name: "node-exporter"
     static_configs:
-      - targets: ["{ip}:{port}"]
+      - targets: ["node_exporter:9100"]
 
   - job_name: "cadvisor"
     static_configs:
-      - targets: ["{ip}:{port}"]
+      - targets: ["cadvisor:8080"]
