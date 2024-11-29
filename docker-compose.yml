@@ -1,4 +1,21 @@
 services:
+  loki:
+    container_name: loki
+    image: grafana/loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yaml:/etc/loki/loki-config.yaml
+    command: -config.file=/etc/loki/loki-config.yaml
+    networks:
+      - monitoring
+  promtail:
+    container_name: promtail 
+    image: grafana/promtail
+    volumes:
+      - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    networks:
+      - monitoring
   cadvisor:
     image: zcube/cadvisor
     container_name: cadvisor
