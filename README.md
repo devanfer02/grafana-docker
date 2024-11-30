@@ -15,7 +15,7 @@ docker plugin install grafana/loki-docker-driver:2.9.1 --alias loki --grant-all-
 2. Configure docker daemon by editing ```/etc/docker/daemon.json``` file with below code.
 
 ```json
- {
+{
     "log-driver": "loki",
     "log-opts": {
       "loki-url": "http://localhost:3100/loki/api/v1/push",
