@@ -14,7 +14,7 @@ docker plugin install grafana/loki-docker-driver:2.9.1 --alias loki --grant-all-
 
 2. Configure docker daemon by editing ```/etc/docker/daemon.json``` file with below code.
 
-NOTES: Beware of known issue: [Deadlocked Docker Daemon](https://github.com/grafana/loki/issues/2361) so make sure you didn't change the configuration below or you know your shit
+NOTES: Beware of known issue: [Deadlocked Docker Daemon](https://github.com/grafana/loki/issues/2361) so make sure you didn't change the configuration below or you know your stuff
 
 ```json
 {
