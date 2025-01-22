@@ -13,7 +13,11 @@ services:
     container_name: promtail 
     image: grafana/promtail
     volumes:
-      - ./loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - './loki/promtail-config.yaml:/etc/promtail/promtail-config.yaml'
+      - '/var/log/containers:/var/log/containers:ro'
+      - '/var/lib/docker/containers:/var/lib/docker/containers:ro'
+      - '/var/log:/var/log:ro'
+    command: -config.file=/etc/promtail/promtail-config.yaml
     networks:
       - monitoring
   cadvisor:

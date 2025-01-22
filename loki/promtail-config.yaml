@@ -3,23 +3,44 @@ server:
   grpc_listen_port: 0
 
 positions:
-  filename: /tmp/positions.yaml
+  filename: /tmp/postail.yaml
 
 clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-- job_name: system
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: varlogs
-      __path__: /var/log/*log
-- job_name: docker
-  static_configs:
-  - targets:
-      - localhost
-    labels:
-      job: docker_logs
-      __path__: /var/lib/docker/containers/*/*-json.log
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*log
+
+  - job_name: docker
+    static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: docker_logs
+        __path__: /var/lib/docker/containers/*/*-json.log
+
+  - job_name: k3s_pod_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: k3s_pod_logs
+          __path__: /var/log/containers/*.log
+    pipeline_stages:
+      - match:
+          selector: '{job="k3s_pod_logs"}'
+          stages:
+          - regex:
+              source: filename
+              expression: "/var/log/containers/(?P<deployment>\\S+?)-\\S+-\\S+-(?P<pod>\\S+?).log"
+          - labels:
+              deployment:
+              pod:                                                       
+
+
